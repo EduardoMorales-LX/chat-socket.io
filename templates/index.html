@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- <link rel="stylesheet" href="./index.css" /> -->
+        <style>
+            body {
+                background: #150f0f;
+                margin: 0;
+                padding-bottom: 3rem;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+                    "Helvetica Neue", sans-serif;
+            }
+
+            #form {
+                background: #333;
+                padding: 0 0.25rem;
+                position: fixed;
+                width: 100%;
+                height: 45px;
+                bottom: 0;
+                left: 0;
+            }
+
+            li {
+                background-color: #efa40d;
+                height: 20px;
+                width: 90%;
+                margin-bottom: 3px;
+            }
+
+            input {
+                width: 85%;
+                padding: 5px;
+                border-radius: 15px;
+                margin: 5px 0;
+            }
+
+            input:focus {
+                outline: none;
+                border: solid 1.5px #efa40d;
+            }
+
+            #form > button {
+                background: #0def76;
+                border: solid 0.12em #333;
+                border-radius: 0.2rem;
+            }
+        </style>
+        <title>Socket chat</title>
+    </head>
+    <body id="body">
+        <ul id="mensajes"></ul>
+        <form action="" id="form">
+            <input type="text" id="input" autocomplete="off" />
+            <button>Enviar</button>
+        </form>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io();
+
+            let form = document.getElementById("form");
+            let input = document.getElementById("input");
+            let mensajes = document.getElementById("mensajes");
+            let body = document.getElementById("body");
+
+            body.addEventListener("onload", function () {
+                if (Notification.permission !== "granted") {
+                    Notification.requestPermission();
+                }
+            });
+
+            function mandarNotificacion(msg) {
+                if (Notification.permission !== "granted") {
+                    Notification.requestPermission();
+                } else {
+                    const options = {
+                        body: msg,
+                        dir: "ltr",
+                    };
+                    const notification = new Notification(
+                        "notification",
+                        options
+                    );
+                    notification.onclick = function () {
+                        window.open("https://www.google.com.mx/?hl=es-419");
+                    };
+                }
+            }
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                socket.emit("chat message", input.value);
+                input.value = "";
+            });
+
+            socket.on("chat message", function (msg) {
+                let item = document.createElement("li");
+                item.textContent = msg;
+                mensajes.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+                mandarNotificacion(msg);
+            });
+        </script>
+    </body>
+</html>
