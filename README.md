@@ -25,7 +25,7 @@ Las herramientas usadas como dependeciaspara producción son:
 ![socket.io version](https://img.shields.io/github/package-json/dependency-version/EduardoMorales-LX/chat-socket.io/socket.io)
 
 Los paquetes usados como dependencias de desarrollador son:
-![nodemon version](https://img.shields.io/github/package-json/dependency-version/EduardoMorales-LX/chat-socket.io/nodemon)
+![nodemon version](https://img.shields.io/github/package-json/dependency-version/EduardoMorales-LX/chat-socket.io/dev/nodemon?style=flat-square)
 
 ## Conceptos explorados
 
